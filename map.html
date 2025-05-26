@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>충주패스지도</title>
+  <title>충주패스지도 - 클릭 확대 막기, 휠 확대 허용</title>
   <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
   <style>
     #openseadragon {
@@ -10,17 +10,44 @@
       height: 100vh;
       background: #000;
     }
+    .overlay {
+      cursor: pointer;
+      background: rgba(255, 0, 0, 0.4);
+      border: 1px solid red;
+    }
   </style>
 </head>
 <body>
   <div id="openseadragon"></div>
 
   <script>
-    OpenSeadragon({
+    const viewer = OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-      tileSources: "map-tiles.dzi"
+      tileSources: "map-tiles.dzi",
+      gestureSettingsMouse: {
+        clickToZoom: false,
+        dblClickToZoom: false,
+        pinchToZoom: true,
+        scrollToZoom: true
+      }
+    });
+
+    viewer.addHandler('open', () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      overlay.title = '클릭 시 이동';
+
+      overlay.addEventListener('click', () => {
+        window.location.href = 'https://naver.me/xtgAZIbV';
+      });
+
+      viewer.addOverlay({
+        element: overlay,
+        location: new OpenSeadragon.Rect(0.104, 0.160, 0.021, 0.003)
+      });
     });
   </script>
 </body>
 </html>
+
