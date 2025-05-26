@@ -2,23 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>충주패스지도 - 클릭 확대 막고 오버레이 클릭 링크</title>
+  <title>충주패스지도</title>
   <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
   <style>
     #openseadragon {
       width: 100vw;
       height: 100vh;
       background: #000;
-      position: relative;
-    }
-    .overlay {
-      cursor: pointer;
-      background: rgba(255, 0, 0, 0.5);
-      border: 1px solid red;
-      pointer-events: auto; /* 클릭 가능하도록 */
-      /* 최소 크기 보장 (필요하면 조절) */
-      min-width: 20px;
-      min-height: 20px;
     }
   </style>
 </head>
@@ -26,38 +16,10 @@
   <div id="openseadragon"></div>
 
   <script>
-    const viewer = OpenSeadragon({
+    OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-      tileSources: "map-tiles.dzi",
-      gestureSettingsMouse: {
-        clickToZoom: false,
-        dblClickToZoom: false,
-        pinchToZoom: true,
-        scrollToZoom: true
-      }
-    });
-
-    // 클릭 확대 방지 (캔버스 클릭 확대 막기)
-    viewer.addHandler('canvas-click', function(event) {
-      event.preventDefault();
-      event.preventDefaultAction = true;
-    });
-
-    viewer.addHandler('open', () => {
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      overlay.title = '클릭 시 이동';
-
-      overlay.addEventListener('click', (e) => {
-        e.stopPropagation();  // 이벤트 버블링 막아서 뷰어 이벤트에 영향 안 주게
-        window.location.href = 'https://naver.me/xtgAZIbV';
-      });
-
-      viewer.addOverlay({
-        element: overlay,
-        location: new OpenSeadragon.Rect(0.104, 0.160, 0.021, 0.003)
-      });
+      tileSources: "map-tiles.dzi"
     });
   </script>
 </body>
