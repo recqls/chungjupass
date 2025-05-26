@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>충주패스지도</title>
+  <title>충주패스지도 - 하이퍼링크 영역</title>
   <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
   <style>
     #openseadragon {
@@ -10,13 +10,20 @@
       height: 100vh;
       background: #000;
     }
+
+    .invisible-link {
+      opacity: 0;                /* 완전 투명 */
+      background: none;          /* 배경 없음 */
+      border: none;              /* 테두리 없음 */
+      pointer-events: auto;      /* 클릭은 가능하게 */
+      position: absolute;
+    }
   </style>
 </head>
 <body>
   <div id="openseadragon"></div>
 
   <script>
-    // OpenSeadragon 초기화 + 클릭 확대 비활성화
     const viewer = OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
@@ -29,10 +36,34 @@
       }
     });
 
-    // 클릭 확대를 강제로 막는 보조 코드 (필요할 수 있음)
-    viewer.addHandler('canvas-click', function(event) {
+    // 클릭 확대 방지
+    viewer.addHandler("canvas-click", function(event) {
       event.preventDefaultAction = true;
-      event.preventDefault?.(); // 브라우저 호환성
+      event.preventDefault?.();
+    });
+
+    viewer.addHandler('open', () => {
+      const linkArea = document.createElement('div');
+      linkArea.className = 'invisible-link';
+      linkArea.title = ‘커피멜로소’;
+
+      linkArea.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.href = 'https://naver.me/xtgAZIbV';
+      });
+
+      // 좌표 기반 사각형 영역
+      const rect = new OpenSeadragon.Rect(
+        0.10410521160858632,
+        0.17549451720478287,
+        0.02059613981323294,
+        0.0036628703457936044
+      );
+
+      viewer.addOverlay({
+        element: linkArea,
+        location: rect
+      });
     });
   </script>
 </body>
