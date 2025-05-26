@@ -16,16 +16,23 @@
   <div id="openseadragon"></div>
 
   <script>
-    OpenSeadragon({
+    // OpenSeadragon 초기화 + 클릭 확대 비활성화
+    const viewer = OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
       tileSources: "map-tiles.dzi",
       gestureSettingsMouse: {
-        clickToZoom: false,     // 클릭 확대 비활성화
-        dblClickToZoom: false,  // 더블 클릭 확대 비활성화
-        scrollToZoom: true,     // 휠 확대는 유지
-        pinchToZoom: true       // 터치 확대 유지
+        clickToZoom: false,
+        dblClickToZoom: false,
+        scrollToZoom: true,
+        pinchToZoom: true
       }
+    });
+
+    // 클릭 확대를 강제로 막는 보조 코드 (필요할 수 있음)
+    viewer.addHandler('canvas-click', function(event) {
+      event.preventDefaultAction = true;
+      event.preventDefault?.(); // 브라우저 호환성
     });
   </script>
 </body>
