@@ -12,7 +12,7 @@
     }
     .overlay {
       cursor: pointer;
-      background: rgba(255, 0, 0, 0.3); /* 테스트용 반투명 빨강 */
+      background: rgba(255, 0, 0, 0.3);
     }
   </style>
 </head>
@@ -27,7 +27,6 @@
     });
 
     viewer.addHandler('open', () => {
-      // 예시 오버레이 (처음부터 표시)
       const overlay = document.createElement('div');
       overlay.className = 'overlay';
       overlay.style.width = '100px';
@@ -44,8 +43,9 @@
       });
     });
 
-    // 이미지 내 좌표, 비율 확인용 클릭 이벤트
     viewer.addHandler('canvas-click', function(event) {
+      event.preventDefaultAction = true;  // 확대 동작 방지
+
       const viewportPoint = viewer.viewport.pointFromPixel(event.position);
       const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
       const imageWidth = viewer.source.dimensions.x;
