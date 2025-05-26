@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>충주패스지도 - 하이퍼링크 영역</title>
+  <title>충주패스지도 - 보이지 않는 링크 영역</title>
   <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
   <style>
     #openseadragon {
@@ -37,28 +37,25 @@
     });
 
     // 클릭 확대 방지
-    viewer.addHandler("canvas-click", function(event) {
+    viewer.addHandler('canvas-click', function (event) {
       event.preventDefaultAction = true;
       event.preventDefault?.();
     });
 
+    // 오버레이 추가
     viewer.addHandler('open', () => {
       const linkArea = document.createElement('div');
       linkArea.className = 'invisible-link';
-      linkArea.title = ‘커피멜로소’;
+      linkArea.title = '링크 영역'; // 안 보이지만 접근성 좋음
 
+      // 클릭 시 링크 이동
       linkArea.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // 확대 방지
         window.location.href = 'https://naver.me/xtgAZIbV';
       });
 
-      // 좌표 기반 사각형 영역
-      const rect = new OpenSeadragon.Rect(
-        0.10410521160858632,
-        0.17549451720478287,
-        0.02059613981323294,
-        0.0036628703457936044
-      );
+      // 오버레이 위치 (지도의 상대 좌표)
+      const rect = new OpenSeadragon.Rect(0.104, 0.160, 0.021, 0.003);
 
       viewer.addOverlay({
         element: linkArea,
