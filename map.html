@@ -23,7 +23,13 @@
     const viewer = OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-      tileSources: "map-tiles.dzi"
+      tileSources: "map-tiles.dzi",
+      gestureSettingsMouse: {
+        clickToZoom: false,
+        dblClickToZoom: false,
+        pinchToZoom: false,
+        scrollToZoom: false
+      }
     });
 
     viewer.addHandler('open', () => {
@@ -44,7 +50,8 @@
     });
 
     viewer.addHandler('canvas-click', function(event) {
-      event.preventDefaultAction = true;  // 확대 동작 방지
+      event.preventDefault();
+      event.preventDefaultAction = true;
 
       const viewportPoint = viewer.viewport.pointFromPixel(event.position);
       const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
