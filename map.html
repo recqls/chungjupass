@@ -21,21 +21,6 @@
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
       tileSources: "map-tiles.dzi"
     });
-viewer.addHandler('open', () => {
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      overlay.title = '클릭 시 이동';
-
-      overlay.addEventListener('click', () => {
-        window.location.href = ' https://naver.me/xtgAZIbV ';
-      });
-
-      viewer.addOverlay({
-        element: overlay,
-        location: new OpenSeadragon.Rect(0.104, 0.160, 0.021, 0.003)
-      });
-    });
-
   </script>
 </body>
 </html>
