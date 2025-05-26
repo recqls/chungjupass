@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>충주패스지도</title>
+  <title>충주패스지도 - 좌표 확인 및 오버레이</title>
   <script src="https://openseadragon.github.io/openseadragon/openseadragon.min.js"></script>
   <style>
     #openseadragon {
@@ -10,16 +10,53 @@
       height: 100vh;
       background: #000;
     }
+    .overlay {
+      cursor: pointer;
+      background: rgba(255, 0, 0, 0.3); /* 테스트용 반투명 빨강 */
+    }
   </style>
 </head>
 <body>
   <div id="openseadragon"></div>
 
   <script>
-    OpenSeadragon({
+    const viewer = OpenSeadragon({
       id: "openseadragon",
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
       tileSources: "map-tiles.dzi"
+    });
+
+    viewer.addHandler('open', () => {
+      // 예시 오버레이 (처음부터 표시)
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      overlay.style.width = '100px';
+      overlay.style.height = '100px';
+      overlay.title = '클릭 시 example.com으로 이동';
+
+      overlay.addEventListener('click', () => {
+        window.location.href = 'https://example.com';
+      });
+
+      viewer.addOverlay({
+        element: overlay,
+        location: new OpenSeadragon.Rect(0.3, 0.3, 0.1, 0.1)
+      });
+    });
+
+    // 이미지 내 좌표, 비율 확인용 클릭 이벤트
+    viewer.addHandler('canvas-click', function(event) {
+      const viewportPoint = viewer.viewport.pointFromPixel(event.position);
+      const imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
+      const imageWidth = viewer.source.dimensions.x;
+      const imageHeight = viewer.source.dimensions.y;
+      const xRatio = imagePoint.x / imageWidth;
+      const yRatio = imagePoint.y / imageHeight;
+
+      alert(
+        `이미지 좌표: x=${imagePoint.x.toFixed(1)}, y=${imagePoint.y.toFixed(1)}\n` +
+        `비율: x=${xRatio.toFixed(3)}, y=${yRatio.toFixed(3)}`
+      );
     });
   </script>
 </body>
