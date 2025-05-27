@@ -30,21 +30,24 @@
 
   // 처음 열릴 때, 이미지에 맞게 초기 정렬
   viewer.addHandler('open', function () {
-    const tiledImage = viewer.world.getItemAt(0);
-    const imageAspectRatio = tiledImage.getContentSize().x / tiledImage.getContentSize().y;
-    const containerAspectRatio = viewer.container.clientWidth / viewer.container.clientHeight;
+  const tiledImage = viewer.world.getItemAt(0);
+  const imageAspectRatio = tiledImage.getContentSize().x / tiledImage.getContentSize().y;
+  const containerAspectRatio = viewer.container.clientWidth / viewer.container.clientHeight;
 
-    if (imageAspectRatio > containerAspectRatio) {
-      viewer.viewport.zoomTo(
-        viewer.viewport.getHomeZoom(), 
-        viewer.viewport.getCenter(true), 
-        true
-      );
-    } else {
-      const zoom = viewer.viewport.getHomeZoom() * (containerAspectRatio / imageAspectRatio);
-      viewer.viewport.zoomTo(zoom, viewer.viewport.getCenter(true), true);
-    }
-  });
+  // 줌 레벨 계산 (좌우 기준 확대)
+  let zoom;
+  if (imageAspectRatio > containerAspectRatio) {
+    zoom = viewer.viewport.getHomeZoom();
+  } else {
+    zoom = viewer.viewport.getHomeZoom() * (containerAspectRatio / imageAspectRatio);
+  }
+
+  // 상단 중앙 위치
+  const topCenter = new OpenSeadragon.Point(0.5, 0.0);
+
+  // 줌 및 위치 적용
+  viewer.viewport.zoomTo(zoom, topCenter, true);
+});
 
   // 클릭 확대 막기
   viewer.addHandler('canvas-click', function(event) {
