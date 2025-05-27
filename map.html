@@ -16,7 +16,8 @@
   <div id="openseadragon"></div>
 
   <script>
-  const viewer = OpenSeadragon({
+    // OpenSeadragon 초기화 + 클릭 확대 비활성화
+    const viewer = OpenSeadragon({
     id: "openseadragon",
     prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
     tileSources: "map-tiles.dzi",
@@ -65,6 +66,12 @@
     viewer.viewport.resize(); // 내부 뷰포트 리사이즈
     viewer.viewport.zoomTo(zoom, center, false); // 현재 줌 & 중심 유지
   });
-</script>
+
+    // 클릭 확대를 강제로 막는 보조 코드 (필요할 수 있음)
+    viewer.addHandler('canvas-click', function(event) {
+      event.preventDefaultAction = true;
+      event.preventDefault?.(); // 브라우저 호환성
+    });
+  </script>
 </body>
 </html>
