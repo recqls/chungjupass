@@ -10,6 +10,10 @@
       height: 100vh;
       background: #000;
     }
+    #openseadragon canvas {
+  will-change: transform;
+  transform: translateZ(0); /* GPU acceleration trigger */
+}
   </style>
 </head>
 <body>
