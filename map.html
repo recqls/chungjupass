@@ -21,18 +21,24 @@
 
   <script>
     // OpenSeadragon 초기화 + 클릭 확대 비활성화
-    const viewer = OpenSeadragon({
-    id: "openseadragon",
-    prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-    tileSources: "map-tiles.dzi",
-    gestureSettingsMouse: {
-      clickToZoom: false,
-      dblClickToZoom: false,
-      scrollToZoom: true,
-      pinchToZoom: true
-    }
-  });
-
+   const viewer = OpenSeadragon({
+  id: "openseadragon",
+  prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+  tileSources: "map-tiles.dzi",
+  useCanvas: true,
+  showNavigator: false,
+  maxImageCacheCount: 200,
+  immediateRender: true,
+  blendTime: 0,
+  alwaysBlend: false,
+  timeout: 120000,
+  gestureSettingsMouse: {
+    clickToZoom: false,
+    dblClickToZoom: false,
+    scrollToZoom: true,
+    pinchToZoom: true
+  }
+});
   // 처음 열릴 때, 이미지에 맞게 초기 정렬
   viewer.addHandler('open', function () {
   const tiledImage = viewer.world.getItemAt(0);
