@@ -16,24 +16,52 @@
   <div id="openseadragon"></div>
 
   <script>
-    // OpenSeadragon 초기화 + 클릭 확대 비활성화
-    const viewer = OpenSeadragon({
-      id: "openseadragon",
-      prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-      tileSources: "map-tiles.dzi",
-      gestureSettingsMouse: {
-        clickToZoom: false,
-        dblClickToZoom: false,
-        scrollToZoom: true,
-        pinchToZoom: true
-      }
-    });
+  const viewer = OpenSeadragon({
+    id: "openseadragon",
+    prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+    tileSources: "map-tiles.dzi",
+    gestureSettingsMouse: {
+      clickToZoom: false,
+      dblClickToZoom: false,
+      scrollToZoom: true,
+      pinchToZoom: true
+    }
+  });
 
-    // 클릭 확대를 강제로 막는 보조 코드 (필요할 수 있음)
-    viewer.addHandler('canvas-click', function(event) {
-      event.preventDefaultAction = true;
-      event.preventDefault?.(); // 브라우저 호환성
-    });
-  </script>
+  // 처음 열릴 때, 이미지에 맞게 초기 정렬
+  viewer.addHandler('open', function () {
+    const tiledImage = viewer.world.getItemAt(0);
+    const imageAspectRatio = tiledImage.getContentSize().x / tiledImage.getContentSize().y;
+    const containerAspectRatio = viewer.container.clientWidth / viewer.container.clientHeight;
+
+    if (imageAspectRatio > containerAspectRatio) {
+      viewer.viewport.zoomTo(
+        viewer.viewport.getHomeZoom(), 
+        viewer.viewport.getCenter(true), 
+        true
+      );
+    } else {
+      const zoom = viewer.viewport.getHomeZoom() * (containerAspectRatio / imageAspectRatio);
+      viewer.viewport.zoomTo(zoom, viewer.viewport.getCenter(true), true);
+    }
+  });
+
+  // 클릭 확대 막기
+  viewer.addHandler('canvas-click', function(event) {
+    event.preventDefaultAction = true;
+    event.preventDefault?.();
+  });
+
+  // 창 크기 변경 시 현재 줌과 중심 유지
+  window.addEventListener('resize', () => {
+    if (!viewer.viewport) return;
+
+    const center = viewer.viewport.getCenter();
+    const zoom = viewer.viewport.getZoom();
+
+    viewer.viewport.resize(); // 내부 뷰포트 리사이즈
+    viewer.viewport.zoomTo(zoom, center, false); // 현재 줌 & 중심 유지
+  });
+</script>
 </body>
 </html>
