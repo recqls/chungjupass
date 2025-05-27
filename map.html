@@ -17,16 +17,22 @@
 
   <script>
   const viewer = OpenSeadragon({
-    id: "openseadragon",
-    prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-    tileSources: "map-tiles.dzi",
-    gestureSettingsMouse: {
-      clickToZoom: false,
-      dblClickToZoom: false,
-      scrollToZoom: true,
-      pinchToZoom: true
-    }
-  });
+  id: "openseadragon",
+  prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+  tileSources: "map-tiles.dzi",
+  useCanvas: true,
+  gestureSettingsMouse: {
+    clickToZoom: false,
+    dblClickToZoom: false,
+    scrollToZoom: true,
+    pinchToZoom: true
+  },
+  animationTime: 0.5,
+  springStiffness: 10,
+  maxZoomPixelRatio: 1.5,
+  immediateRender: true,
+  showNavigator: false
+});
 
   // 처음 열릴 때, 이미지에 맞게 초기 정렬
   viewer.addHandler('open', function () {
