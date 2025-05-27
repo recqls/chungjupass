@@ -16,22 +16,39 @@
   <div id="openseadragon"></div>
 
   <script>
-  const viewer = OpenSeadragon({
-  id: "openseadragon",
-  prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-  tileSources: "map-tiles.dzi",
-  gestureSettingsMouse: {
-    clickToZoom: false,
-    dblClickToZoom: false,
-    scrollToZoom: true,
-    pinchToZoom: true
-  },
-  animationTime: 0.5,
-  springStiffness: 10,
-  maxZoomPixelRatio: 1.5,
-  immediateRender: true,
-  showNavigator: false
-});
+    const viewer = OpenSeadragon({
+    id: "openseadragon",
+    prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+    tileSources: "map-tiles.dzi",
+    gestureSettingsMouse: {
+      clickToZoom: false,
+      dblClickToZoom: false,
+      scrollToZoom: true,
+      pinchToZoom: true
+    },
+    maxZoomPixelRatio: 1.25,
+    animationTime: 0.4,
+    springStiffness: 8,
+    showNavigator: false,
+    immediateRender: false,
+    maxImageCacheCount: 1000
+  });
+
+  // 전체 타일 미리 로딩
+  viewer.addHandler('open', async function () {
+    const homeZoom = viewer.viewport.getHomeZoom();
+
+    // 줌 레벨 배열 (원하면 더 추가)
+    const zoomLevels = [homeZoom * 0.5, homeZoom, homeZoom * 2];
+
+    for (let zoom of zoomLevels) {
+      viewer.viewport.zoomTo(zoom, null, true);
+      await new Promise(resolve => setTimeout(resolve, 300)); // 300ms 대기
+    }
+
+    // 초기 위치 복귀
+    viewer.viewport.goHome();
+  });
 
   // 처음 열릴 때, 이미지에 맞게 초기 정렬
   viewer.addHandler('open', function () {
