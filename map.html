@@ -20,11 +20,7 @@
   <div id="openseadragon"></div>
 
   <script>
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-if (isSafari) {
-  viewer.viewport.animationTime = 0;
-  viewer.viewport.setHomeZoom(viewer.viewport.getZoom()); // 강제로 현재 줌 고정
-}
+  
     // OpenSeadragon 초기화 + 클릭 확대 비활성화
    const viewer = OpenSeadragon({
   id: "openseadragon",
